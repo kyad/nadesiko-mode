@@ -19,6 +19,7 @@
 (define-derived-mode nadesiko-mode prog-mode "なでしこ"
   "nadesiko mode is a major mode for editing nadesiko files"
   :syntax-table nadesiko-mode-syntax-table
+  (font-lock-ensure)
 
   (if nadesiko-tab-width
       (setq tab-width nadesiko-tab-width)
