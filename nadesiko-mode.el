@@ -8,18 +8,9 @@
 
 (defvar nadesiko-tab-width nil "Width of a tab for nadesiko mode.")
 
-(defconst nadesiko-mode-syntax-table
-  (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?「 "\('」" table)
-    (modify-syntax-entry ?」 "\)「" table)
-    (modify-syntax-entry ?# "< b" table)
-    (modify-syntax-entry ?\n "> b" table)
-    table))
-
 (define-derived-mode nadesiko-mode prog-mode "なでしこ"
   "nadesiko mode is a major mode for editing nadesiko files"
-  :syntax-table nadesiko-mode-syntax-table
-  (font-lock-ensure)
+  (setq font-lock-defaults '(nadesiko-mode-syntax-keywords))
 
   (if nadesiko-tab-width
       (setq tab-width nadesiko-tab-width)
@@ -29,19 +20,38 @@
   (setq comment-end "")
 )
 
-(add-to-list 'auto-mode-alist '("\\.nako3$" . nadesiko-mode))
+(add-to-list 'auto-mode-alist '("\\.nako$" . nadesiko-mode))
 
-(font-lock-add-keywords 'nadesiko-mode
-                        '(("もし" . font-lock-keyword-face)
-                          ("ならば" . font-lock-keyword-face)
-                          ("違えば" . font-lock-keyword-face)
-                          ("ここまで" . font-lock-keyword-face)
-                          ("代入" . font-lock-keyword-face)
-                          ("定" . font-lock-keyword-face)
-                          ("戻" . font-lock-keyword-face)
-                          ("●" . font-lock-function-name-face)
-                          ("はい" . font-lock-constant-face)
-                          ("いいえ" . font-lock-constant-face)))
+(defconst nadesiko-mode-syntax-keywords
+  (list
+   '("間" . font-lock-keyword-face)
+   '("言" . font-lock-keyword-face)
+   '("永遠" . font-lock-keyword-face)
+   '("もし" . font-lock-keyword-face)
+   '("ならば" . font-lock-keyword-face)
+   '("違えば" . font-lock-keyword-face)
+   '("区切" . font-lock-keyword-face)
+   '("返" . font-lock-keyword-face)
+   '("繰" . font-lock-keyword-face)
+   '("ここまで" . font-lock-keyword-face)
+   '("整数変換" . font-lock-keyword-face)
+   '("代入" . font-lock-keyword-face)
+   '("尋" . font-lock-keyword-face)
+   '("定" . font-lock-keyword-face)
+   '("配列数値変換" . font-lock-keyword-face)
+   '("配列要素作成" . font-lock-keyword-face)
+   '("表示" . font-lock-keyword-face)
+   '("抜" . font-lock-keyword-face)
+   '("戻" . font-lock-keyword-face)
+   (cons
+    (concat
+     "\\(●\\)"
+     "\\(.*\\)$")
+    '((1 font-lock-function-name-face)
+      (2 font-lock-function-name-face)))
+   '("はい" . font-lock-constant-face)
+   '("いいえ" . font-lock-constant-face)
+   '("改行" . font-lock-constant-face)))
 
 (provide 'nadesiko-mode)
 
